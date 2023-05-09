@@ -25,6 +25,11 @@ async def on_startup(_):
       # del users[f"{i + 1}"]
       # with open("users.json", "w", encoding="utf-8") as file:
       #   json.dump(users, file, ensure_ascii=None)
+  # print(users)
+  # for a in range(len(users)):
+  #   db[f"{a}"]["user_id"] = users[f"{a}"]["user_id"]
+  #   db[f"{a}"]["full_name"] = users[f"{a}"]["full_name"]
+  #   db[f"{a}"]["user_name"] = users[f"{a}"]["user_name"]
 
 
 @dp.message_handler(commands=["start"])
@@ -40,10 +45,11 @@ async def send_message(msg: types.Message):
   #users = {"user_id": [], }
   with open("users.json", "r", encoding="utf-8") as read_file:
     users = json.load(read_file)
-    # user_id = []
-    # user_name = []
-    # user_id = users["user_id"]
-    # user_name = users["username"]
+  # users = db.keys()
+  # user_id = []
+  # user_name = []
+  # user_id = users["user_id"]
+  # user_name = users["username"]
   # print(len(users))
   print(users)
   # print(users["0"])
@@ -81,8 +87,8 @@ async def send_message(msg: types.Message):
     f"[ date: {datetime.datetime.now()}, id: {msg.from_user.id}, full_name: {msg.from_user.full_name}, username: {msg.from_user.username} ], text: {msg.text}"
   )
   with open("logs.txt", "a", encoding="utf-8") as file:
-    file.writelines(
-      f"[ date: {datetime.datetime.now()}, id: {msg.from_user.id}, full_name: {msg.from_user.full_name}, username: {msg.from_user.username} ], text: {msg.text}"
+    file.write(
+      f"\n[ date: {datetime.datetime.now()}, id: {msg.from_user.id}, full_name: {msg.from_user.full_name}, username: {msg.from_user.username} ], text: {msg.text}"
     )
   if msg.text.lower() == "привет" or msg.text.lower() == "ку":
     await msg.answer(
@@ -119,7 +125,6 @@ async def send_message(msg: types.Message):
       await bot.send_message(
         msg.chat.id,
         f'Произошла ошибка. Попробуйте ещё раз...\nError: {repr(e)}')
-
 
 if __name__ == "__main__":
   executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
